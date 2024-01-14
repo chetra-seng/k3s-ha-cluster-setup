@@ -11,8 +11,8 @@ First we init a master node with `--init-cluster` option as well as setting a co
 curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - server \
     --cluster-init \
     --disable traefik \
-    --write-kubeconfig-mode 644
-    --node-name master-1
+    --write-kubeconfig-mode 644 \
+    --node-name master-01
 ```
 
 ### Adding Second Master Node
@@ -20,8 +20,8 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - server \
 ```bash
 curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - server \
     --disable traefik \
-    --write-kubeconfig-mode 644
-    --node-name master-1
+    --write-kubeconfig-mode 644 \
+    --node-name master-02 \
     --server https://<ip or hostname of server1>:6443
 ```
 
