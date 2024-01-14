@@ -2,7 +2,7 @@
 Setting up Kubernetes cluster using Rancher k3s with high availability with Ingress Nginx Controller
 
 ## Getting Started
-In this setup, we'll be setting up 5 nodes cluster with 2 masters and 3 workers.
+In this setup, we'll be setting up 5 nodes cluster with 3 masters and 2 workers.
 
 ### Adding First Master Node
 First we init a master node with `--init-cluster` option as well as setting a common token for all cluster to connect using `K3S_TOKEN` environment variable. `--init-cluster` will created an embedded ectd elimated to need to add external database. You can opt to use external database if required.
@@ -12,17 +12,17 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - server \
     --cluster-init \
     --disable traefik \
     --write-kubeconfig-mode 644 \
-    --node-name master-01
+    --tls-san=<ip or hostname of loadbalancer>
 ```
 
-### Adding Second Master Node
+### Adding Second and Third Master Node
 
 ```bash
 curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - server \
     --disable traefik \
     --write-kubeconfig-mode 644 \
-    --node-name master-02 \
-    --server https://<ip or hostname of server1>:6443
+    --server https://<ip or hostname of server1>:6443 \
+    --tls-san=<ip or hostname of loadbalancer>
 ```
 
 ### Adding Worker Nodes
@@ -30,7 +30,7 @@ curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - server \
 ```bash
 curl -sfL https://get.k3s.io | K3S_TOKEN=<COMMON_TOKEN> sh -s - agent --server https://<ip or hostname of server>:6443
 ```
-We will run this command on all of 3 worker nodes.
+We will run this command on all of 2 worker nodes.
 
 ### Installing Ingress Nginx Controller
 ```bash
